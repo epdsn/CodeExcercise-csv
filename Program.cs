@@ -13,12 +13,9 @@ namespace CodeExcerciseDataImportOutput
         {
             
             string fileLocation;
-            //string fileType; 
             int numberOfFields;
             string[] fileData = null;
             string delimiter;
-            var dataFields = new object();
-
 
             int count = 0;
             do
@@ -31,15 +28,13 @@ namespace CodeExcerciseDataImportOutput
                 fileLocation = Console.ReadLine();
             } while (!File.Exists(fileLocation));
 
-            
-            Console.WriteLine("\r\nIs the file format CSV (comma-seperated values) or TSV (tab seperated values)?\r\n- Enter 1 for CSV Or Enter 2 for TSV:");
-            var choice = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("\r\nIs the file format CSV (comma-seperated values) or TSV (tab seperated values)?");
+            Console.WriteLine("Enter 1 for CSV Or Enter 2 for TSV:");
 
-            delimiter = (choice == 1) ? "," : "\t";
+            delimiter = (Convert.ToInt32(Console.ReadLine()) == 1) ? "," : "\t";
 
             Console.WriteLine("\r\nHow many fields should each record contain?");
             numberOfFields = Convert.ToInt32(Console.ReadLine());
-
 
             fileData = readData(@fileLocation);
 
@@ -47,9 +42,11 @@ namespace CodeExcerciseDataImportOutput
 
 
             Console.WriteLine("\r\nExport Complete");
+            Console.WriteLine("\nPress Enter to exit.");
             Console.ReadLine();
 
         }
+
 
         public static string[] readData(string filepath)
         {
@@ -74,21 +71,26 @@ namespace CodeExcerciseDataImportOutput
 
                 var header = data[0].Split(delimiter);
 
-                var csv = new StringBuilder();
+                var correctFields = new StringBuilder();
+                var incorrectFields = new StringBuilder();
+
                 foreach (var row in data.Skip(1))
                 {
                     string[] recordFields = row.Split(delimiter);
 
-                    if (recordFields.Count() == numOfFields)
+                    if ((recordFields.Count()) == numOfFields)
                     {
-                        csv.AppendLine(row);
+                        correctFields.AppendLine(row);
+                    }
+                    else {
+                        incorrectFields.AppendLine(row);
                     }
 
                     //var newLine = $"{recordFields[0]},{recordFields[1]},{recordFields[2]}";
                     //csv.AppendLine(newLine);
                 }
-                File.WriteAllText(@"newfile3.csv", csv.ToString());
-
+                File.WriteAllText(@"Records.csv", correctFields.ToString());
+                File.WriteAllText(@"InvalidFieldRecords.csv", incorrectFields.ToString());
             }
             catch (Exception ex)
             {
