@@ -14,12 +14,18 @@ namespace CodeExcerciseDataImportOutput
             int numberOfFields;
             string[] fileData = null;
             string delimiter;
+            ConsoleKeyInfo cki;
+
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine(" CSV and TSV data exporter");
+            Console.WriteLine("--------------------------------");
 
             int count = 0;
             do
             {
                 if (count > 0) {
-                    Console.WriteLine("\r\nFile does not exist OR you do not sufficant permissions.\r\nPlease enter a valid file path:");
+                    Console.WriteLine("\r\nFile does not exist OR you do not sufficant permissions.");
+                    Console.WriteLine("\rPlease enter a valid file path:");
                 }
                 count++;
                 Console.WriteLine("\r\nWhere is the file located?");
@@ -37,8 +43,11 @@ namespace CodeExcerciseDataImportOutput
             ReadRecords(fileData, delimiter, numberOfFields );
 
             Console.WriteLine("\r\nExport Complete");
-            Console.WriteLine("\nPress Enter to exit.");
-            Console.ReadLine();
+            Console.WriteLine("\nPress the \"q\" key to quit.");
+            do
+            {
+                cki = Console.ReadKey();
+            } while (cki.Key != ConsoleKey.Q);
 
         }
 
