@@ -9,7 +9,7 @@ namespace CodeExcerciseDataImportOutput
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             
             string fileLocation;
@@ -30,23 +30,19 @@ namespace CodeExcerciseDataImportOutput
 
             Console.WriteLine("\r\nIs the file format CSV (comma-seperated values) or TSV (tab seperated values)?");
             Console.WriteLine("Enter 1 for CSV Or Enter 2 for TSV:");
-
             delimiter = (Convert.ToInt32(Console.ReadLine()) == 1) ? "," : "\t";
 
             Console.WriteLine("\r\nHow many fields should each record contain?");
             numberOfFields = Convert.ToInt32(Console.ReadLine());
 
             fileData = readData(@fileLocation);
-
             ReadRecords(fileData, delimiter, numberOfFields );
-
 
             Console.WriteLine("\r\nExport Complete");
             Console.WriteLine("\nPress Enter to exit.");
             Console.ReadLine();
 
         }
-
 
         public static string[] readData(string filepath)
         {
@@ -61,16 +57,12 @@ namespace CodeExcerciseDataImportOutput
             }
         }
 
-
         public static void ReadRecords(string[] data, string delimiter, int numOfFields)
         {
 
-            string[] invalidFormat = { "Record is not in a valid format" };
             try
             {
-
                 var header = data[0].Split(delimiter);
-
                 var correctFields = new StringBuilder();
                 var incorrectFields = new StringBuilder();
 
@@ -85,9 +77,6 @@ namespace CodeExcerciseDataImportOutput
                     else {
                         incorrectFields.AppendLine(row);
                     }
-
-                    //var newLine = $"{recordFields[0]},{recordFields[1]},{recordFields[2]}";
-                    //csv.AppendLine(newLine);
                 }
                 File.WriteAllText(@"Records.csv", correctFields.ToString());
                 File.WriteAllText(@"InvalidFieldRecords.csv", incorrectFields.ToString());
@@ -96,21 +85,8 @@ namespace CodeExcerciseDataImportOutput
             {
                 Console.WriteLine("There was an error reading the record.");
                 throw new ApplicationException("Error retrieving record:", ex);
-
             }
 
-        }
-
-        public static bool RecordFormat(string format, string[] record, int position) 
-        {
-            // check if format matches 
-            // firstname, middle, last
-            if (record[position].Equals(format))
-            {
-                return true;
-            }
-            return false;
-        
         }
 
     }
